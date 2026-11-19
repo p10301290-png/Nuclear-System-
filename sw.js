@@ -1,5 +1,5 @@
 /* Nuclear System service worker — offline + online */
-const VER = "v1";
+const VER = "v2";
 const SHELL = "ns-shell-" + VER;
 const RUNTIME = "ns-runtime-" + VER;
 const SHELL_FILES = [
@@ -70,9 +70,9 @@ self.addEventListener("fetch", e => {
     e.respondWith(networkFirst(req, "./index.html", 4000));
     return;
   }
-  // Own files
+  // Own files: network first (always fresh when online), cache when offline
   if (url.origin === self.location.origin) {
-    e.respondWith(staleWhileRevalidate(req, SHELL));
+    e.respondWith(networkFirst(req, null, 4000));
     return;
   }
   // Fonts + Firebase SDK scripts

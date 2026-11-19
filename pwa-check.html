@@ -13,8 +13,10 @@ button{padding:12px 16px;border-radius:12px;border:0;background:#e22;color:#fff;
 <h1>PWA check</h1>
 <div id="out"></div>
 <button id="inst" style="display:none">Install app</button>
+<button id="rst">Reset: purana cache + service worker hatao</button>
 <script>
 const out=document.getElementById("out");
+document.getElementById("rst").onclick=async()=>{try{for(const r of await navigator.serviceWorker.getRegistrations())await r.unregister();for(const k of await caches.keys())await caches.delete(k)}catch(e){}location.href=location.pathname+"?r="+Date.now()};
 const add=(t,c,s)=>{const d=document.createElement("div");d.className="r "+c;d.textContent=(c==="ok"?"✅ ":c==="bad"?"❌ ":"⚠️ ")+t;if(s){const m=document.createElement("small");m.textContent=s;d.appendChild(m)}out.appendChild(d)};
 let dp=null;
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;add("Chrome ne install allow kar diya (beforeinstallprompt aaya)","ok");const b=document.getElementById("inst");b.style.display="block";b.onclick=()=>dp.prompt()});
@@ -27,7 +29,7 @@ addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;add("Chrome n
   const link=document.createElement("a");
   let mUrl="manifest.webmanifest";
   try{
-    const idx=await fetch("index.html",{cache:"no-store"});
+    const idx=await fetch("index.html?cb="+Date.now(),{cache:"no-store"});
     if(!idx.ok) add("index.html: HTTP "+idx.status,"bad");
     else{const t=await idx.text();const m=t.match(/<link[^>]+rel="manifest"[^>]+href="([^"]+)"/);
       if(m){mUrl=m[1];add("index.html me manifest link: "+mUrl,"ok");}else add("index.html me <link rel=manifest> NAHI hai (purani index.html upload hai)","bad");
@@ -36,7 +38,7 @@ addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;add("Chrome n
   }catch(e){add("index.html fetch error: "+e.message,"bad")}
   let man=null;
   try{
-    const r=await fetch(mUrl,{cache:"no-store"});
+    const r=await fetch(mUrl+"?cb="+Date.now(),{cache:"no-store"});
     if(!r.ok)add(mUrl+": HTTP "+r.status+" (file repo me nahi hai / naam galat)","bad");
     else{try{man=await r.json();add("manifest.webmanifest mil gaya, JSON sahi","ok")}catch(e){add("manifest JSON invalid: "+e.message,"bad")}}
   }catch(e){add("manifest fetch error: "+e.message,"bad")}
@@ -47,7 +49,7 @@ addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;add("Chrome n
     for(const i of (man.icons||[])){
       const u=new URL(i.src,new URL(mUrl,location.href)).href;
       try{
-        const r=await fetch(u,{cache:"no-store"});
+        const r=await fetch(u+"?cb="+Date.now(),{cache:"no-store"});
         if(!r.ok){add(i.src+": HTTP "+r.status+" — ye file repo me upload nahi hui","bad");continue}
         const b=await r.blob();const bm=await createImageBitmap(b);
         const okSize=bm.width>=192;
@@ -63,7 +65,7 @@ addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;add("Chrome n
   if(!("serviceWorker" in navigator))add("Service worker supported nahi","bad");
   else{
     try{
-      const r=await fetch("sw.js",{cache:"no-store"});
+      const r=await fetch("sw.js?cb="+Date.now(),{cache:"no-store"});
       add("sw.js: HTTP "+r.status,r.ok?"ok":"bad");
       const regs=await navigator.serviceWorker.getRegistrations();
       add("Registered service workers: "+regs.length,regs.length?"ok":"warn",regs.map(g=>g.scope+" · "+(g.active?g.active.state:"no active")).join("\n"));
