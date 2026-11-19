@@ -4,8 +4,8 @@ const SHELL = "ns-shell-" + VER;
 const RUNTIME = "ns-runtime-" + VER;
 const SHELL_FILES = [
   "./", "./index.html", "./manifest.webmanifest",
-  "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png",
-  "./icons/apple-touch-icon.png", "./icons/favicon.svg", "./icons/favicon-32.png"
+  "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png",
+  "./apple-touch-icon.png", "./favicon.svg", "./favicon-32.png"
 ];
 // third-party files the app needs to run offline (cached, never blocks install)
 const EXTRA = [
