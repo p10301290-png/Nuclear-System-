@@ -4907,6 +4907,30 @@ load();
 applyCfg();
 render();
 </script>
+<style>
+/* ===== Google account card (login UI) ===== */
+#cfg-acct .cic.g{background:#fff!important;border:1px solid rgba(255,255,255,.55)!important;box-shadow:0 6px 18px -8px rgba(0,0,0,.55)!important;color:#202124!important}
+#cfg-acct .cic.g svg{width:26px!important;height:26px!important;stroke:none!important}
+html #cfg-acct>.acc-hd{min-height:0!important;cursor:default}
+html #cfg-acct>.acc-hd:active{background:none;transform:none}
+html #cfg-acct>button.acc-hd{cursor:pointer}
+#cfg-acct .acc-hd small{white-space:normal!important;display:block!important}
+#cfg-acct .gbody{padding:0 18px 18px}
+#cfg-acct .gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:52px;padding:0 18px;border:0;border-radius:16px;background:#fff;color:#202124;font:700 15px/1 'Manrope',system-ui,sans-serif;letter-spacing:.01em;cursor:pointer;box-shadow:0 8px 22px -10px rgba(0,0,0,.6);transition:transform .15s,opacity .2s,filter .2s;-webkit-tap-highlight-color:transparent}
+#cfg-acct .gbtn svg{width:22px;height:22px;flex:none}
+#cfg-acct .gbtn:active{transform:scale(.97)}
+#cfg-acct .gbtn.off{opacity:.55;filter:grayscale(.4)}
+#cfg-acct .gbtn.busy{pointer-events:none;opacity:.75}
+#cfg-acct .gbtn.busy svg{animation:gspin 1s linear infinite}
+@keyframes gspin{to{transform:rotate(360deg)}}
+#cfg-acct .gnote{display:flex;gap:10px;align-items:flex-start;margin:12px 0 0;padding:11px 13px;border-radius:14px;font-size:12.5px;line-height:1.45;background:color-mix(in srgb,var(--warn,#f5a524) 14%,transparent);border:1px solid color-mix(in srgb,var(--warn,#f5a524) 40%,transparent);color:var(--ink)}
+#cfg-acct .gnote.err{background:color-mix(in srgb,var(--bad,#ef4444) 14%,transparent);border-color:color-mix(in srgb,var(--bad,#ef4444) 45%,transparent)}
+#cfg-acct .gnote svg{flex:none;width:16px;height:16px;margin-top:1px}
+#cfg-acct .gnote:empty{display:none}
+#cfg-acct .gbenefits{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+#cfg-acct .gbenefits span{font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:99px;background:var(--fill);border:1px solid var(--line);color:var(--mute)}
+#cfg-acct .acc-ch.on{background:color-mix(in srgb,var(--good,#22c55e) 18%,transparent);border-color:color-mix(in srgb,var(--good,#22c55e) 45%,transparent);color:var(--good,#22c55e)}
+</style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -4962,33 +4986,61 @@ const FIREBASE_CONFIG = {
     } catch (e) { setSt("Sync failed: " + (e.code || e.message)); }
   }
 
+  const G = '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+  const warnI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>';
+  const hosted = /^https?:$/.test(location.protocol);
+  const fbDown = () => {
+    if (!hosted) return "Google sign-in does not work inside a preview or a local file. Open the app from your hosted https link (GitHub Pages) and sign in there.";
+    if (!window.firebase) return "Could not load Google services. Check your internet connection and reload the page.";
+    return "";
+  };
+  const errMsg = e => {
+    const c = e && e.code || "";
+    if (c === "auth/popup-closed-by-user" || c === "auth/cancelled-popup-request") return "Sign-in cancelled.";
+    if (c === "auth/unauthorized-domain") return "This domain is not authorised. Firebase Console → Authentication → Settings → Authorized domains → add " + location.hostname;
+    if (c === "auth/network-request-failed") return "No internet connection. Try again.";
+    if (c === "auth/operation-not-allowed") return "Google sign-in is turned off. Firebase Console → Authentication → Sign-in method → enable Google.";
+    return "Sign-in failed: " + (c || (e && e.message) || "unknown error");
+  };
+
   window.accountCard = () => {
     const chR = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>';
     const person = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
-    const row = (tag, attrs, tile, t, sub, end) => `<${tag} class="acc-hd" ${attrs}><span class="cic">${tile}</span><div><b>${t}</b><small>${sub}</small></div><span class="acc-ch">${end}</span></${tag}>`;
+    const row = (tag, attrs, tile, t, sub, end, tcls) => `<${tag} class="acc-hd" ${attrs}><span class="cic ${tcls || ""}">${tile}</span><div><b>${t}</b><small>${sub}</small></div>${end ? `<span class="acc-ch">${end}</span>` : ""}</${tag}>`;
+    const gbtn = (label, cls) => `<button type="button" class="gbtn ${cls || ""}" data-cloud="in">${G}<span class="t">${label}</span></button>`;
+    const noteBox = (msg, err) => msg ? `<div class="gnote ${err ? "err" : ""}" id="cloud-st" role="status">${warnI}<span>${esc(msg)}</span></div>` : `<p class="note" id="cloud-st"></p>`;
     const note = `<p class="note" id="cloud-st">${esc(st)}</p>`;
-    if (!ok) {
-      const noCfg = !FIREBASE_CONFIG.apiKey || /^YOUR_/.test(FIREBASE_CONFIG.apiKey);
-      return `<div class="dcard acc" id="cfg-acct">${row("div", "", person, "Google account", noCfg ? "Firebase config is missing" : "Sign-in works on the hosted https link", "")}</div>`;
+
+    if (!ok || !user) {
+      const down = !ok ? (fbDown() || "Google sign-in is not configured.") : "";
+      const isErr = /failed|not authori|turned off|No internet/i.test(st);
+      const msg = down || st;
+      return `<div class="dcard acc" id="cfg-acct">${row("div", "", G, "Google account", "Back up and sync your data across devices", "", "g")}<div class="gbody"><div class="gbenefits"><span>☁ Cloud backup</span><span>⇄ Phone + PC sync</span><span>🔒 Private to you</span></div>${gbtn("Continue with Google", down ? "off" : "")}${noteBox(msg, isErr)}</div></div>`;
     }
-    if (!user) return `<div class="dcard acc" id="cfg-acct">${row("button", 'data-cloud="in"', person, "Google account", "Sign in to back up and sync your data", chR)}${note}</div>`;
+
     const open = !!S.acctOpen;
-    const tile = user.photoURL ? `<img src="${esc(user.photoURL)}" referrerpolicy="no-referrer" alt="">` : person;
-    return `<div class="dcard acc ${open ? "open" : ""}" id="cfg-acct">${row("button", 'data-cloud="tgl" aria-expanded="' + open + '"', tile, esc(user.displayName || "Signed in"), esc(user.email || ""), ic(open ? "chevu" : "chevd", 18))}${open ? `<div class="acc-body"><div class="segs" style="margin:6px 0 0"><button class="seg" data-cloud="sync">Sync now</button><button class="seg danger" data-cloud="out">Sign out</button></div>${note}</div>` : note}</div>`;
+    const ini = esc(((user.displayName || user.email || "U").trim()[0] || "U").toUpperCase());
+    const tile = user.photoURL ? `<img src="${esc(user.photoURL)}" referrerpolicy="no-referrer" alt="" onerror="this.outerHTML='<span style=&quot;font:800 20px Manrope,sans-serif&quot;>${ini}</span>'">` : `<span style="font:800 20px Manrope,sans-serif">${ini}</span>`;
+    return `<div class="dcard acc ${open ? "open" : ""}" id="cfg-acct">${row("button", 'type="button" data-cloud="tgl" aria-expanded="' + open + '"', tile, esc(user.displayName || "Signed in"), esc(user.email || "") + " · Connected", ic(open ? "chevu" : "chevd", 18))}${open ? `<div class="acc-body"><div class="segs" style="margin:6px 0 0"><button class="seg" data-cloud="sync">Sync now</button><button class="seg danger" data-cloud="out">Sign out</button></div>${note}</div>` : note}</div>`;
   };
 
   document.addEventListener("click", async e => {
     const b = e.target.closest("[data-cloud]"); if (!b) return;
     const a = b.dataset.cloud;
     if (a === "tgl") { S.acctOpen = !S.acctOpen; return render(); }
-    if (!ok) return setSt("Add your Firebase config in the code first.");
+    if (!ok) { setSt(fbDown() || "Add your Firebase config in the code first."); return redraw(); }
     if (a === "in") {
+      if (b.classList.contains("busy")) return;
+      b.classList.add("busy");
+      const t = b.querySelector(".t"); if (t) t.textContent = "Opening Google…";
       const p = new firebase.auth.GoogleAuthProvider();
+      p.setCustomParameters({ prompt: "select_account" });
       try { await auth.signInWithPopup(p); }
       catch (err) {
-        if (err.code === "auth/popup-blocked" || err.code === "auth/operation-not-supported-in-this-environment") auth.signInWithRedirect(p);
-        else setSt("Sign-in failed: " + (err.code || err.message));
+        if (err.code === "auth/popup-blocked" || err.code === "auth/operation-not-supported-in-this-environment") { try { await auth.signInWithRedirect(p); return; } catch (e2) { err = e2; } }
+        st = errMsg(err); redraw();
       }
+      b.classList.remove("busy"); if (t) t.textContent = "Continue with Google";
     } else if (a === "out") { flushSave(); await auth.signOut(); }
     else if (a === "sync") pull();
   });
@@ -4996,6 +5048,7 @@ const FIREBASE_CONFIG = {
   if (ok) {
     firebase.initializeApp(FIREBASE_CONFIG);
     auth = firebase.auth(); db = firebase.firestore();
+    auth.getRedirectResult().catch(err => { st = errMsg(err); redraw(); });
     auth.onAuthStateChanged(u => { user = u; if (u) pull(); else st = ""; redraw(); });
     document.addEventListener("visibilitychange", () => { if (!document.hidden && user) pull(); });
   }
