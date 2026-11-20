@@ -4915,6 +4915,14 @@ html #cfg-acct>.acc-hd{min-height:0!important;cursor:default}
 html #cfg-acct>.acc-hd:active{background:none;transform:none}
 html #cfg-acct>button.acc-hd{cursor:pointer}
 #cfg-acct .acc-hd small{white-space:normal!important;display:block!important}
+/* Account avatar fix: works in every Config layout (with or without .cfg-top) */
+html #cfg-acct.dcard{padding:0!important}
+html #cfg-acct>.acc-hd{padding:16px 18px!important;gap:14px!important;box-sizing:border-box;width:100%}
+html #cfg-acct>.acc-hd>div{flex:1;min-width:0;text-align:left}
+html #cfg-acct .cic{width:48px!important;height:48px!important;min-width:48px;flex:none!important;border-radius:50%!important;overflow:hidden!important;position:relative}
+html #cfg-acct .cic img{width:100%!important;height:100%!important;max-width:none;object-fit:cover;border-radius:50%;display:block;position:static!important}
+html #cfg-acct .acc-hd small{overflow:hidden;text-overflow:ellipsis;word-break:break-all}
+html #cfg-acct .acc-body{padding:0 18px 16px!important}
 #cfg-acct .gbody{padding:0 18px 18px}
 #cfg-acct .gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:52px;padding:0 18px;border:0;border-radius:16px;background:#fff;color:#202124;font:700 15px/1 'Manrope',system-ui,sans-serif;letter-spacing:.01em;cursor:pointer;box-shadow:0 8px 22px -10px rgba(0,0,0,.6);transition:transform .15s,opacity .2s,filter .2s;-webkit-tap-highlight-color:transparent}
 #cfg-acct .gbtn svg{width:22px;height:22px;flex:none}
