@@ -10,11 +10,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="description" content="Nuclear System: a 20-point daily discipline tracker with weekly goals.">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="shortcut icon" href="favicon.ico">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+<link rel="shortcut icon" href="icons/favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icons/apple-touch-icon-120.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/apple-touch-icon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icons/apple-touch-icon-167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <title>Nuclear System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2108,19 +2113,6 @@ html .cfg-top ~ .dcard.acc { padding: 0; }
 html .cfg-top { margin: 4px 0 6px; }
 html .cfg-top h1 { font-size: 30px; line-height: 1.1; }
 html .cfg-top ~ .dcard > .acc-hd { box-sizing: border-box; width: 100%; }
-
-/* ===== Classic look: Google account card fix ===== */
-#cfg-acct .acc-ch:empty { display: none; }
-#cfg-acct .cic { overflow: hidden; flex: none; }
-#cfg-acct .cic img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; }
-html[data-classic] #cfg-acct { padding: 0; margin-bottom: 14px; }
-html[data-classic] #cfg-acct > .acc-hd { padding: 18px; }
-html[data-classic] #cfg-acct .acc-hd small { display: block; margin-top: 2px; line-height: 1.3; white-space: normal; overflow: visible; text-overflow: clip; }
-html[data-classic] #cfg-acct .acc-body { padding: 4px 18px 18px; }
-html[data-classic] #cfg-acct > .note { margin: 0 18px 14px; }
-html[data-classic] #cfg-acct .acc-body .note { margin: 10px 0 0; }
-html[data-classic] #cfg-acct .note:empty { display: none; }
-html[data-classic] #cfg-acct .segs { margin: 6px 0 0; }
 .hf-pv[data-v="prism"] { background-image: conic-gradient(from 200deg at 100% 0%, transparent 0 20%, color-mix(in srgb, var(--brand) 70%, transparent) 36%, color-mix(in srgb, var(--brand2) 65%, transparent) 46%, transparent 60%); }
 .hf-pv[data-v="mesh"] { background-image: radial-gradient(50% 70% at 0% 0%, color-mix(in srgb, var(--brand) 60%, transparent), transparent 70%), radial-gradient(50% 70% at 100% 0%, color-mix(in srgb, var(--brand2) 55%, transparent), transparent 70%), radial-gradient(60% 70% at 100% 100%, color-mix(in srgb, var(--brand) 45%, transparent), transparent 70%), radial-gradient(50% 60% at 0% 100%, color-mix(in srgb, var(--brand2) 40%, transparent), transparent 70%); }
 .hf-pv[data-v="halftone"] { background-image: radial-gradient(circle, color-mix(in srgb, var(--ink) 55%, transparent) 1.2px, transparent 1.7px); background-size: 7px 7px; -webkit-mask-image: none; }
@@ -2237,6 +2229,23 @@ html:root[data-style="modern"][data-hfx="silk"]:where(:not([data-classic])) :is(
 .hf-tx b { display: block; margin-top: 6px; font: 800 28px/1.1 Sora, Manrope, system-ui, sans-serif; letter-spacing: -.04em;
   background: linear-gradient(180deg, var(--ink) 30%, color-mix(in srgb, var(--ink) 45%, var(--brand))); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .lv-o > span { position: absolute; z-index: 2; left: 20px; bottom: 14px; margin: 0; padding: 5px 14px; border-radius: 99px; background: var(--fill); border: 1px solid var(--line-strong); color: var(--ink); font: 700 11.5px Manrope, system-ui, sans-serif; }
+
+.nk-ta { resize: none; overflow: hidden; min-height: 46px; line-height: 1.4; border-radius: 18px; }
+.trow:has(.nk-ta) { align-items: flex-start; }
+/* Nuke: what works / doesn't work cards */
+html .nk-pc { border-color: color-mix(in srgb, var(--c) 32%, var(--line)) !important; }
+html .nk-pc > .acc-hd { padding: 20px 18px; gap: 14px; }
+html .nk-pc > .acc-hd .cic { width: 46px; height: 46px; }
+html .nk-pc > .acc-hd b { font-size: 12px; letter-spacing: .06em; line-height: 1.3; }
+html .nk-pc > .acc-hd small { letter-spacing: .03em; }
+html .nk-pc > .acc-hd small { display: block; margin-top: 4px; white-space: normal; }
+html .nk-pc .acc-body { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px 18px; border-top: 1px solid color-mix(in srgb, var(--c) 22%, var(--line)); }
+.nk-pt { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 18px;
+  background: color-mix(in srgb, var(--c) 8%, var(--solid)); border: 1px solid color-mix(in srgb, var(--c) 22%, var(--line)); }
+.nk-pt i { flex: none; width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; font-style: normal; color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); border: 1px solid color-mix(in srgb, var(--c) 38%, transparent); }
+.nk-pt div { flex: 1; min-width: 0; }
+.nk-pt small { display: block; margin-bottom: 3px; font: 700 9.5px 'Space Mono', monospace; letter-spacing: .16em; color: var(--c); }
+.nk-pt span { display: block; font: 600 15px/1.45 Manrope, system-ui, sans-serif; color: var(--ink); overflow-wrap: anywhere; }
 </style>
 </head>
 <body>
@@ -2365,7 +2374,8 @@ const ICONS = {
   bell: '<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/>',
   hourglass: '<path d="M6 3h12M6 21h12M7 3c0 5 4 6 5 9-1 3-5 4-5 9M17 3c0 5-4 6-5 9 1 3 5 4 5 9"/>',
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-  check: '<path d="m5 12.5 4.5 4.5L19 7"/>'
+  check: '<path d="m5 12.5 4.5 4.5L19 7"/>',
+  swap: '<path d="M7 8h11l-3-3M17 16H6l3 3"/>'
 };
 
 const ICOPT = ["wallet","dumbbell","book","bolt","heart","star","flame","moon","sun","target"];
@@ -3529,6 +3539,11 @@ const bkJson = () => JSON.stringify({
   cfg: S.cfg
 }, null, 2);
 
+function nukeListEd(key, title, ph, items) {
+  return `<div class="cat" style="margin:16px 0 6px">${title}</div>
+    ${items.map(i => `<div class="trow"><textarea class="inp nk-ta" rows="1" data-nkl="${key}:${i.id}" aria-label="${esc(title)}">${esc(i.t)}</textarea><button class="x" data-act="nkdel:${key}:${i.id}" aria-label="Delete">${ic("x", 16)}</button></div>`).join("")}
+    <div class="trow"><input class="inp" id="nk-new-${key}" data-nkenter="nkadd:${key}" placeholder="${ph}"><button class="x ok" data-act="nkadd:${key}" aria-label="Add">+</button></div>`;
+}
 function nukeCfg() {
   const n = nk();
   return `
@@ -3544,6 +3559,8 @@ function nukeCfg() {
     <textarea class="mn" rows="3" data-nko="1" placeholder="xyz — kya achieve / nuke karna hai?">${esc(n.obj)}</textarea>
     <div class="cat" style="margin:14px 0 6px">Must do rule</div>
     <textarea class="mn" rows="3" data-nkmust="1" placeholder="${esc(NK_MUST)}">${esc(n.must)}</textarea>
+    ${nukeListEd("w", "What works (do more)", "Kya kaam kar raha hai?", n.works)}
+    ${nukeListEd("f", "What doesn't work (change it)", "Kya kaam nahi kar raha?", n.fails)}
     <p class="note" style="margin-top:10px">Ye sab Nuke tab me dikhta hai. Daily points ke calculation se iska koi lena-dena nahi.</p>`;
 }
 
@@ -4329,11 +4346,14 @@ function nuke() {
 
   const listAcc = (key, title, sub, icon, items, ph) => {
     const open = S["nk" + key] !== false;
-    return `<div class="dcard acc ${open ? "open" : ""}">
-      <button class="acc-hd" data-act="nktgl:${key}" aria-expanded="${open}"><span class="cic">${ic(icon, 20)}</span><div><b>${title}</b><small>${items.length} ${items.length === 1 ? "point" : "points"} · ${sub}</small></div><span class="acc-ch">${ic(open ? "chevu" : "chevd", 18)}</span></button>
+    const vis = items.filter(i => i.t.trim());
+    const col = key === "w" ? "#22c55e" : "var(--bad)";
+    return `<div class="dcard acc nk-pc ${open ? "open" : ""}" style="--c:${col}">
+      <button class="acc-hd" data-act="nktgl:${key}" aria-expanded="${open}"><span class="cic" style="background:linear-gradient(135deg,${col},color-mix(in srgb,${col} 55%,#000));color:#fff;border:0;box-shadow:0 0 18px -4px ${col}">${ic(icon, 20)}</span><div><b>${title}</b><small>${vis.length} ${vis.length === 1 ? "point" : "points"} · ${sub}</small></div><span class="acc-ch">${ic(open ? "chevu" : "chevd", 18)}</span></button>
       ${open ? `<div class="acc-body">
-        ${items.map(i => `<div class="trow"><input class="inp" data-nkl="${key}:${i.id}" value="${esc(i.t)}" aria-label="${title}"><button class="x" data-act="nkdel:${key}:${i.id}" aria-label="Delete">${ic("x", 16)}</button></div>`).join("")}
-        <div class="trow"><input class="inp" id="nk-new-${key}" data-nkenter="nkadd:${key}" placeholder="${ph}"><button class="x ok" data-act="nkadd:${key}" aria-label="Add">+</button></div>
+        ${vis.length
+          ? vis.map((i, n) => `<div class="nk-pt"><i>${ic(key === "w" ? "up" : "swap", 16)}</i><div><small>${key === "w" ? "DO MORE" : "CHANGE IT"}</small><span>${esc(i.t)}</span></div></div>`).join("")
+          : `<p class="note" style="margin:10px 0 2px">Abhi kuch nahi likha. Config → Nuke Goal me add karo.</p>`}
       </div>` : ""}
     </div>`;
   };
@@ -4383,8 +4403,8 @@ function nuke() {
     </div>
   </div>
 
-  ${listAcc("w", "WHAT WORKS (DO MORE)", "jo kaam kar raha hai", "check", n.works, "Kya kaam kar raha hai?")}
-  ${listAcc("f", "WHAT DOESN'T WORK (CHANGE IT)", "jo badalna hai", "alert", n.fails, "Kya kaam nahi kar raha?")}
+  ${listAcc("w", "WHAT WORKS (DO MORE)", "jo kaam kar raha hai", "up", n.works, "Kya kaam kar raha hai?")}
+  ${listAcc("f", "WHAT DOESN'T WORK (CHANGE IT)", "jo badalna hai", "swap", n.fails, "Kya kaam nahi kar raha?")}
 
   <div class="dcard">
     <div class="chd"><span class="cic">${ic("cal", 20)}</span><div><b>${k === today ? "TASKS TODAY" : "TASKS · " + nkFmt(k).toUpperCase()}</b><small>${done}/${tasks.length} done · ${alarms} alarm${alarms === 1 ? "" : "s"} set</small></div><span class="nk-tag" style="margin-left:auto">${pctDone}%</span></div>
@@ -4441,9 +4461,10 @@ function nkAct(a) {
     if (again) { try { again.focus({ preventScroll: true }); } catch (e) {} }
     return;
   }
-  if (cmd === "nkdel" && p[1] === "t") {
-    const tk = n.tasks.find(x => x.id === p[2]);
-    S.cm = { title: "Delete this task?", msg: "\u201C" + ((tk && tk.n.trim()) || "Task") + "\u201D will be removed from the Nuke task list.", yes: "nkdelgo:t:" + p[2] };
+  if (cmd === "nkdel") {
+    const L0 = listOf(p[1]), it0 = L0 && L0.find(x => x.id === p[2]);
+    const label = it0 ? ((p[1] === "t" ? it0.n : it0.t) || "").trim() : "";
+    S.cm = { title: p[1] === "t" ? "Delete this task?" : "Delete this point?", msg: "\u201C" + (label || (p[1] === "t" ? "Task" : "Point")) + "\u201D will be removed. This can\u2019t be undone.", yes: "nkdelgo:" + p[1] + ":" + p[2] };
     return render();
   }
   if (cmd === "nkdel" || cmd === "nkdelgo") {
@@ -4496,6 +4517,9 @@ function nkChange(t) {
   return true;
 }
 
+function nkFit(el) { el.style.height = "auto"; el.style.height = el.scrollHeight + 2 + "px"; }
+document.addEventListener("input", e => { if (e.target.classList && e.target.classList.contains("nk-ta")) nkFit(e.target); });
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.classList && e.target.classList.contains("nk-ta")) { e.preventDefault(); e.target.blur(); } });
 function render() {
   try {
     const app = document.getElementById("app");
@@ -4514,6 +4538,7 @@ function render() {
     app.className = "wrap t-" + S.tab + (animate ? "" : " noanim");
     app.innerHTML = nbar() + (S.storageError && S.tab !== "set" ? `<div class="dcard" style="border:1px solid var(--bad)"><b style="color:var(--bad)">Storage warning</b><p class="note">${esc(S.storageMessage)}</p></div>` : "") + (S.tab === "nuke" ? nuke() : S.tab === "plan" ? plan() : S.tab === "review" ? review() : S.tab === "set" ? settings() : dash());
     document.querySelectorAll(".tabs button, .side [data-tab]").forEach(b => b.classList.toggle("on", b.dataset.tab === S.tab));
+    document.querySelectorAll(".nk-ta").forEach(nkFit);
     document.querySelectorAll(".chart-scroll").forEach(el => { el.scrollLeft = el.scrollWidth; });
     if (!animate) window.scrollTo(0, sy);
     renderModal();
@@ -4944,9 +4969,7 @@ const FIREBASE_CONFIG = {
     const note = `<p class="note" id="cloud-st">${esc(st)}</p>`;
     if (!ok) {
       const noCfg = !FIREBASE_CONFIG.apiKey || /^YOUR_/.test(FIREBASE_CONFIG.apiKey);
-      const web = /^https?:$/.test(location.protocol);
-      const why = noCfg ? "Firebase config is missing" : (web ? "Firebase load nahi hua · tap to retry" : "Sign-in works on the hosted https link");
-      return `<div class="dcard acc" id="cfg-acct">${row(web && !noCfg ? "button" : "div", web && !noCfg ? 'data-cloud="retry"' : "", person, "Google account", why, web && !noCfg ? chR : "")}${note}</div>`;
+      return `<div class="dcard acc" id="cfg-acct">${row("div", "", person, "Google account", noCfg ? "Firebase config is missing" : "Sign-in works on the hosted https link", "")}</div>`;
     }
     if (!user) return `<div class="dcard acc" id="cfg-acct">${row("button", 'data-cloud="in"', person, "Google account", "Sign in to back up and sync your data", chR)}${note}</div>`;
     const open = !!S.acctOpen;
@@ -4958,22 +4981,13 @@ const FIREBASE_CONFIG = {
     const b = e.target.closest("[data-cloud]"); if (!b) return;
     const a = b.dataset.cloud;
     if (a === "tgl") { S.acctOpen = !S.acctOpen; return render(); }
-    if (a === "retry") { location.reload(); return; }
     if (!ok) return setSt("Add your Firebase config in the code first.");
     if (a === "in") {
       const p = new firebase.auth.GoogleAuthProvider();
-      p.setCustomParameters({ prompt: "select_account" });
-      setSt("Opening Google sign-in…");
-      try { await auth.signInWithPopup(p); setSt(""); }
+      try { await auth.signInWithPopup(p); }
       catch (err) {
-        const c = err.code || "";
-        if (c === "auth/popup-blocked" || c === "auth/operation-not-supported-in-this-environment") {
-          try { await auth.signInWithRedirect(p); } catch (e2) { setSt("Sign-in failed: " + (e2.code || e2.message)); }
-        }
-        else if (c === "auth/popup-closed-by-user" || c === "auth/cancelled-popup-request") setSt("Sign-in cancel ho gaya");
-        else if (c === "auth/unauthorized-domain") setSt("Is domain ko Firebase Console → Authentication → Settings → Authorized domains me add karo");
-        else if (c === "auth/network-request-failed") setSt("Internet check karo, phir dobara try karo");
-        else setSt("Sign-in failed: " + (c || err.message));
+        if (err.code === "auth/popup-blocked" || err.code === "auth/operation-not-supported-in-this-environment") auth.signInWithRedirect(p);
+        else setSt("Sign-in failed: " + (err.code || err.message));
       }
     } else if (a === "out") { flushSave(); await auth.signOut(); }
     else if (a === "sync") pull();
@@ -4982,7 +4996,6 @@ const FIREBASE_CONFIG = {
   if (ok) {
     firebase.initializeApp(FIREBASE_CONFIG);
     auth = firebase.auth(); db = firebase.firestore();
-    auth.getRedirectResult().catch(e => { setSt("Sign-in failed: " + (e.code || e.message)); });
     auth.onAuthStateChanged(u => { user = u; if (u) pull(); else st = ""; redraw(); });
     document.addEventListener("visibilitychange", () => { if (!document.hidden && user) pull(); });
   }
