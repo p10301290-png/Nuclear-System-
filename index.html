@@ -4225,6 +4225,45 @@ function renderModal() {
 }
 
 let LASTVIEW = "";
+/* ===== Android-style navigation history =====
+   Every time the screen "step" changes (tab, month view, expanded task, opened Config section...)
+   we remember the step we left, including scroll position. Back restores exactly that step. */
+const NAV = { stack: [], prev: null, sy: 0, restoring: false };
+const NAV_EXTRA = ["pd", "y", "nkd"];                       // restored, but never create a step on their own
+const navKeys = () => Object.keys(S).filter(k => /(Open|Sub)$/.test(k));
+function navSig(o) {
+  const ks = new Set(navKeys().concat(Object.keys(o).filter(k => /(Open|Sub)$/.test(k))));
+  return JSON.stringify([o.tab, o.open == null ? null : o.open, o.nkx || null, o.se || null, [...ks].sort().map(k => !!o[k] && o[k])]);
+}
+function navSnap() {
+  const o = { tab: S.tab, open: S.open, nkx: S.nkx || null, se: S.se || null, sy: NAV.sy };
+  navKeys().forEach(k => { o[k] = S[k]; });
+  NAV_EXTRA.forEach(k => { o[k] = S[k]; });
+  return o;
+}
+function navRestore(o) {
+  NAV.restoring = true;
+  S.tab = o.tab; S.open = o.open; S.nkx = o.nkx; S.se = o.se;
+  navKeys().forEach(k => { S[k] = (k in o) ? o[k] : (typeof S[k] === "string" ? null : false); });
+  NAV_EXTRA.forEach(k => { if (k in o) S[k] = o[k]; });
+  S.arm = false; S.msg = ""; S.tmsg = ""; S.bk = ""; S.undo = null; S.rmsg = ""; S.modal = null; S.cm = null; S.delArm = null;
+  render();
+  const y = o.sy || 0;
+  const go = () => window.scrollTo({ top: y, left: 0, behavior: "instant" });
+  go(); requestAnimationFrame(go); setTimeout(go, 120);
+}
+function navTrack() {                                        // called at the start of every render()
+  if (NAV.restoring) { NAV.restoring = false; NAV.prev = null; return; }
+  const cur = navSnap(); cur.sy = 0;
+  if (NAV.prev && navSig(NAV.prev) !== navSig(cur)) {
+    const top = NAV.stack[NAV.stack.length - 1];
+    if (top && navSig(top) === navSig(cur)) NAV.stack.pop();   // user walked back manually (e.g. in-app Back / closing a section)
+    else { NAV.stack.push(Object.assign({}, NAV.prev, { sy: NAV.sy })); if (NAV.stack.length > 60) NAV.stack.shift(); }
+  }
+}
+function navCommit() { NAV.prev = navSnap(); }              // called at the end of every render()
+addEventListener("scroll", () => { NAV.sy = window.scrollY; }, { passive: true });
+document.addEventListener("click", () => { NAV.sy = window.scrollY; }, true);   // capture the position BEFORE the tap navigates
 // ================= NUKE GOAL TAB =================
 const nkId = () => "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 const nkFmt = k => { const [y, m, d] = k.split("-").map(Number); return d + " " + MN[m - 1].slice(0, 3) + " " + y; };
@@ -4525,12 +4564,7 @@ function render() {
     const app = document.getElementById("app");
     if (!app) return;
     calcFirst();
-    if (S._lt !== undefined && S._lt !== S.tab && !S._noPush) {
-      const stk = S.tabStack || (S.tabStack = []);
-      if (stk[stk.length - 1] === S.tab) stk.pop();
-      else { stk.push(S._lt); if (stk.length > 20) stk.shift(); }
-    }
-    S._lt = S.tab; S._noPush = 0;
+    navTrack();
     const view = S.tab + "|" + S.open;
     const animate = view !== LASTVIEW;
     const sy = window.scrollY;
@@ -4542,6 +4576,7 @@ function render() {
     document.querySelectorAll(".chart-scroll").forEach(el => { el.scrollLeft = el.scrollWidth; });
     if (!animate) window.scrollTo(0, sy);
     renderModal();
+    navCommit();
   } catch(err) {
     document.getElementById("app").innerHTML = `<div class="dcard" style="border-color:var(--bad)"><h2 style="color:var(--bad)">Render Error</h2><p class="sub">${err.message}</p></div>`;
   }
@@ -4836,21 +4871,18 @@ document.addEventListener("keydown", e => {
   function closeTop() {
     if (S.cm) { S.cm = null; render(); return true; }
     if (S.modal) { S.modal = null; render(); return true; }
-    if (S.tab === "nuke" && S.nkx) { S.nkx = null; render(); return true; }
+    // go back to the exact previous step (same tab / section / scroll position)
+    if (NAV.stack.length) { navRestore(NAV.stack.pop()); return true; }
+    // fallback when there is no history: close whatever is open, then go to Home
+    if (S.nkx) { S.nkx = null; render(); return true; }
     if (S.se) { S.se = null; render(); return true; }
     if (S.open != null) { S.open = null; render(); return true; }
-    if (S.tab === "set") {
-      const keys = Object.keys(S).filter(k => /Open$/.test(k) && S[k]);
-      if (keys.length) { keys.forEach(k => { S[k] = false; }); render(); return true; }
+    const ks = Object.keys(S).filter(k => /Open$/.test(k) && S[k]);
+    if (ks.length) { ks.forEach(k => { S[k] = false; }); render(); return true; }
+    if (S.tab !== HOME) {
+      S.tab = HOME; S.open = null; S.arm = false; S.msg = ""; S.tmsg = ""; S.bk = ""; S.undo = null; S.rmsg = "";
+      window.scrollTo(0, 0); render(); return true;
     }
-    const goto = t => {
-      S._noPush = 1; S.tab = t; S.open = null; S.arm = false; S.msg = ""; S.tmsg = ""; S.bk = "";
-      S.undo = null; S.rmsg = ""; S.se = null; S.modal = null; S.cm = null;
-      window.scrollTo(0, 0); render();
-    };
-    const stk = S.tabStack || [];
-    while (stk.length) { const t = stk.pop(); if (t !== S.tab) { goto(t); return true; } }
-    if (S.tab !== HOME) { goto(HOME); return true; }
     return false;
   }
   // history entry that absorbs the Back press (pushState, with a #hash fallback for content:// / file:// pages)
@@ -4923,6 +4955,11 @@ html #cfg-acct .cic{width:48px!important;height:48px!important;min-width:48px;fl
 html #cfg-acct .cic img{width:100%!important;height:100%!important;max-width:none;object-fit:cover;border-radius:50%;display:block;position:static!important}
 html #cfg-acct .acc-hd small{overflow:hidden;text-overflow:ellipsis;word-break:break-all}
 html #cfg-acct .acc-body{padding:0 18px 16px!important}
+html #cfg-acct>.note{margin:0 18px 16px 18px!important;padding:0!important;font-size:12.5px;line-height:1.4;text-align:left}
+html #cfg-acct>.note:empty{display:none!important}
+html #cfg-acct .acc-body .note{margin:10px 0 0!important;padding:0!important}
+html #cfg-acct .acc-body .segs{margin:0!important}
+html #cfg-acct>.acc-hd{align-items:center!important;min-height:0!important}
 #cfg-acct .gbody{padding:0 18px 18px}
 #cfg-acct .gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:52px;padding:0 18px;border:0;border-radius:16px;background:#fff;color:#202124;font:700 15px/1 'Manrope',system-ui,sans-serif;letter-spacing:.01em;cursor:pointer;box-shadow:0 8px 22px -10px rgba(0,0,0,.6);transition:transform .15s,opacity .2s,filter .2s;-webkit-tap-highlight-color:transparent}
 #cfg-acct .gbtn svg{width:22px;height:22px;flex:none}
@@ -4939,9 +4976,9 @@ html #cfg-acct .acc-body{padding:0 18px 16px!important}
 #cfg-acct .gbenefits span{font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:99px;background:var(--fill);border:1px solid var(--line);color:var(--mute)}
 #cfg-acct .acc-ch.on{background:color-mix(in srgb,var(--good,#22c55e) 18%,transparent);border-color:color-mix(in srgb,var(--good,#22c55e) 45%,transparent);color:var(--good,#22c55e)}
 </style>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-auth-compat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.min.js"></script>
 <script>
 /* ===== Google login + cloud sync (Firebase). Paste your own config below. ===== */
 const FIREBASE_CONFIG = {
