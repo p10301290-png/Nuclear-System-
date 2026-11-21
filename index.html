@@ -1058,9 +1058,9 @@ textarea:focus, input:focus, select:focus {
 .tk-row { display: flex; gap: 8px; align-items: stretch; }
 .tk-pill { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; height: 42px; padding: 0 12px; border-radius: 14px; background: var(--solid); border: 1px solid var(--line); color: var(--mute); }
 .tk-pill .ico { flex: none; }
-.tk .tk-pill input[type], .tk .tk-pill select { flex: 1; min-width: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; outline: 0; color: var(--ink); font: 700 12.5px 'Space Mono', monospace; letter-spacing: 0; text-transform: none; -webkit-appearance: none; appearance: none; user-select: text; }
-.tk .tk-time input[type] { text-align: center; }
-.tk .tk-pill input[type]:focus { background: transparent; border: 0; }
+:is(.tk, .nk-rc) .tk-pill input[type], :is(.tk, .nk-rc) .tk-pill select { flex: 1; min-width: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; outline: 0; color: var(--ink); font: 700 12.5px 'Space Mono', monospace; letter-spacing: 0; text-transform: none; -webkit-appearance: none; appearance: none; user-select: text; }
+:is(.tk, .nk-rc) .tk-time input[type] { text-align: center; }
+:is(.tk, .nk-rc) .tk-pill input[type]:focus { background: transparent; border: 0; }
 .tk-time em { flex: none; font-style: normal; color: var(--brand); font-weight: 800; }
 .tk-pill select { font-family: Manrope, system-ui, sans-serif; font-size: 13px; font-weight: 700; padding-right: 4px; }
 .tk-pill select option { color: #000; }
@@ -1762,14 +1762,14 @@ html::-webkit-scrollbar { display: none; }
 :root[data-style="modern"]:where(:not([data-classic])) .tabs button.on::before { left: 26%; right: 26%; bottom: 4px; height: 3px; background: linear-gradient(90deg, transparent, #fff, transparent); opacity: .55; }
 :root[data-style="modern"]:where(:not([data-classic])) .tabs button.on svg { color: #fff; filter: drop-shadow(0 0 5px var(--brand)) drop-shadow(0 0 14px var(--gl)); }
 :root[data-theme="light"][data-style="modern"]:where(:not([data-classic])) .tabs button.on svg { color: var(--brand-ink); }
-:root[data-style]:where(:not([data-classic])) .tk .tk-pill input[type], :root[data-style]:where(:not([data-classic])) .tk .tk-pill select, :root[data-style]:where(:not([data-classic])) .tk .tk-name, :root[data-style]:where(:not([data-classic])) .tk-add input[id][data-nkenter] {
+:root[data-style]:where(:not([data-classic])) :is(.tk, .nk-rc) .tk-pill input[type], :root[data-style]:where(:not([data-classic])) :is(.tk, .nk-rc) .tk-pill select, :root[data-style]:where(:not([data-classic])) .tk .tk-name, :root[data-style]:where(:not([data-classic])) .tk-add input[id][data-nkenter] {
   background: transparent !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; padding-left: 0; padding-right: 0;
 }
 :root[data-style]:where(:not([data-classic])) .tk .tk-name { border-bottom: 1px dashed transparent !important; padding: 9px 4px; }
 :root[data-style]:where(:not([data-classic])) .tk .tk-name:focus { border-bottom-color: var(--brand) !important; }
-:root[data-style]:where(:not([data-classic])) .tk .tk-pill { background: color-mix(in srgb, var(--ink) 4%, var(--solid)); border-color: var(--line-strong); }
-:root[data-style]:where(:not([data-classic])) .tk .tk-pill:focus-within { border-color: var(--gl-line); box-shadow: 0 0 0 3px var(--gl-soft); }
-:root[data-style]:where(:not([data-classic])) .tk .tk-time input[type] { text-align: center; padding: 0 2px; }
+:root[data-style]:where(:not([data-classic])) :is(.tk, .nk-rc) .tk-pill { background: color-mix(in srgb, var(--ink) 4%, var(--solid)); border-color: var(--line-strong); }
+:root[data-style]:where(:not([data-classic])) :is(.tk, .nk-rc) .tk-pill:focus-within { border-color: var(--gl-line); box-shadow: 0 0 0 3px var(--gl-soft); }
+:root[data-style]:where(:not([data-classic])) :is(.tk, .nk-rc) .tk-time input[type] { text-align: center; padding: 0 2px; }
 html:root[data-style="modern"]:where(:not([data-classic])) .tk .tk-al.on, html:root[data-style="modern"]:where(:not([data-classic])) .tk-part .btn-mini.on, html:root[data-style="modern"]:where(:not([data-classic])) .fr .btn-mini.on, html:root[data-style="modern"]:where(:not([data-classic])) .btn-mini.on {
   background: color-mix(in srgb, var(--brand) 24%, var(--solid)); color: var(--brand-ink);
   border-color: color-mix(in srgb, var(--brand) 62%, transparent);
@@ -2233,19 +2233,23 @@ html:root[data-style="modern"][data-hfx="silk"]:where(:not([data-classic])) :is(
 .nk-ta { resize: none; overflow: hidden; min-height: 46px; line-height: 1.4; border-radius: 18px; }
 .trow:has(.nk-ta) { align-items: flex-start; }
 /* Nuke: what works / doesn't work cards */
-html .nk-pc { border-color: color-mix(in srgb, var(--c) 32%, var(--line)) !important; }
-html .nk-pc > .acc-hd { padding: 20px 18px; gap: 14px; }
-html .nk-pc > .acc-hd .cic { width: 46px; height: 46px; }
-html .nk-pc > .acc-hd b { font-size: 12px; letter-spacing: .06em; line-height: 1.3; }
-html .nk-pc > .acc-hd small { letter-spacing: .03em; }
-html .nk-pc > .acc-hd small { display: block; margin-top: 4px; white-space: normal; }
-html .nk-pc .acc-body { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px 18px; border-top: 1px solid color-mix(in srgb, var(--c) 22%, var(--line)); }
-.nk-pt { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 18px;
-  background: color-mix(in srgb, var(--c) 8%, var(--solid)); border: 1px solid color-mix(in srgb, var(--c) 22%, var(--line)); }
-.nk-pt i { flex: none; width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; font-style: normal; color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); border: 1px solid color-mix(in srgb, var(--c) 38%, transparent); }
-.nk-pt div { flex: 1; min-width: 0; }
-.nk-pt small { display: block; margin-bottom: 3px; font: 700 9.5px 'Space Mono', monospace; letter-spacing: .16em; color: var(--c); }
-.nk-pt span { display: block; font: 600 15px/1.45 Manrope, system-ui, sans-serif; color: var(--ink); overflow-wrap: anywhere; }
+/* Nuke: what works / doesn't work — same look as the other cards (task rows) */
+.nk-pc.nk-w { --c: var(--ok); }
+.nk-pc.nk-f { --c: var(--bad); }
+.nk-pc .acc-body { display: flex; flex-direction: column; padding: 6px 18px 14px; border-top: 1px solid var(--line); }
+.nk-pt { position: relative; margin: 8px 0; padding: 14px 14px 14px 18px; border-radius: 22px; background: var(--fill); border: 1px solid var(--line); overflow: hidden; }
+.nk-pt::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3.5px; border-radius: 0 4px 4px 0; background: var(--c); box-shadow: 0 0 12px color-mix(in srgb, var(--c) 55%, transparent); }
+.nk-pt span { display: block; font: 700 15.5px/1.35 Manrope, system-ui, sans-serif; color: var(--ink); overflow-wrap: anywhere; }
+.nk-pc .acc-body > .note { margin: 10px 0 4px; }
+/* Daily routine */
+.nk-rc { margin: 8px 0; padding: 12px; border-radius: 20px; background: var(--fill); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+.nk-rc .trow { margin: 0; }
+.nk-rrow { display: flex; align-items: center; gap: 8px; }
+.nk-rrow .tk-pill { flex: 1; min-width: 0; }
+.nk-dow { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.nk-dow button { height: 38px; padding: 0; border-radius: 12px; background: var(--solid); border: 1px solid var(--line); color: var(--mute); font: 700 12px 'Space Mono', monospace; cursor: pointer; }
+.nk-dow button.on { background: color-mix(in srgb, var(--brand) 16%, var(--solid)); border-color: var(--brand); color: var(--ink); }
+.nk-rp { display: inline-grid; place-items: center; margin-left: 8px; color: var(--mute); vertical-align: middle; }
 </style>
 </head>
 <body>
@@ -3559,6 +3563,15 @@ function nukeCfg() {
     <textarea class="mn" rows="3" data-nko="1" placeholder="xyz — kya achieve / nuke karna hai?">${esc(n.obj)}</textarea>
     <div class="cat" style="margin:14px 0 6px">Must do rule</div>
     <textarea class="mn" rows="3" data-nkmust="1" placeholder="${esc(NK_MUST)}">${esc(n.must)}</textarea>
+    <div class="cat" style="margin:16px 0 6px">Daily routine (repeat)</div>
+    <p class="note" style="margin:0 0 8px">Ek baar add karo, ye task chune hue din roz apne aap Nuke tab me aa jayega. Badlav sirf aage ke dino par lagta hai.</p>
+    ${n.rec.map(r => `<div class="nk-rc">
+      <div class="trow"><input class="inp" data-nkr="n:${r.id}" value="${esc(r.n)}" placeholder="Task ka naam" aria-label="Routine task"><button class="x" data-act="nkdel:r:${r.id}" aria-label="Delete routine">${ic("x", 16)}</button></div>
+      <div class="nk-rrow"><div class="tk-pill tk-time">${ic("clock", 16)}<input type="time" data-nkr="from:${r.id}" value="${esc(r.from || "")}" aria-label="Start time"><em>→</em><input type="time" data-nkr="to:${r.id}" value="${esc(r.to || "")}" aria-label="End time"></div>
+        <button class="tk-al ${r.al ? "on" : ""}" data-act="nkral:${r.id}" aria-pressed="${!!r.al}" aria-label="Alarm ${r.al ? "set" : "not set"}">${ic("bell", 18)}</button></div>
+      <div class="nk-dow">${[1,2,3,4,5,6,0].map(dw => `<button type="button" class="${r.days.includes(dw) ? "on" : ""}" data-act="nkrd:${r.id}:${dw}" aria-pressed="${r.days.includes(dw)}" aria-label="${["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dw]}">${"SMTWTFS"[dw]}</button>`).join("")}</div>
+    </div>`).join("")}
+    <div class="trow"><input class="inp" id="nk-new-r" data-nkenter="nkadd:r" placeholder="Naya routine task (jaise Physics)"><button class="x ok" data-act="nkadd:r" aria-label="Add routine">+</button></div>
     ${nukeListEd("w", "What works (do more)", "Kya kaam kar raha hai?", n.works)}
     ${nukeListEd("f", "What doesn't work (change it)", "Kya kaam nahi kar raha?", n.fails)}
     <p class="note" style="margin-top:10px">Ye sab Nuke tab me dikhta hai. Daily points ke calculation se iska koi lena-dena nahi.</p>`;
@@ -4287,7 +4300,8 @@ function nkDefault() {
       t("English", "", "", false, "ip"), t("Hindi", "10:00", "13:00", true, "ns")
     ],
     ans: { when: "", what: "" },
-    tm: L(["example 1", "example 2", "example 3"])
+    tm: L(["example 1", "example 2", "example 3"]),
+    rec: []
   };
 }
 function nk() {
@@ -4297,7 +4311,7 @@ function nk() {
   if (!nkDateOk(n.st)) n.st = TD();
   if (typeof n.obj !== "string") n.obj = "";
   if (typeof n.must !== "string" || !n.must.trim()) n.must = NK_MUST;
-  ["works", "fails", "tasks", "tm"].forEach(k => { if (!Array.isArray(n[k])) n[k] = []; });
+  ["works", "fails", "tasks", "tm", "rec"].forEach(k => { if (!Array.isArray(n[k])) n[k] = []; });
   if (!n.ans || typeof n.ans !== "object" || Array.isArray(n.ans)) n.ans = { when: "", what: "" };
   if (fresh) save();
   return n;
@@ -4317,10 +4331,32 @@ function nkClean(x) {
     tasks: arr(x.tasks, 1000).filter(t => t && typeof t === "object").map(t => ({
       id: uid(t.id), n: str(t.n, 300), d: nkDateOk(t.d) ? t.d : TD(),
       from: nkTimeOk(t.from) ? t.from : "", to: nkTimeOk(t.to) ? t.to : "",
-      al: !!t.al, st: NK_ST.some(q => q[0] === t.st) ? t.st : "ns"
+      al: !!t.al, st: NK_ST.some(q => q[0] === t.st) ? t.st : "ns", r: str(t.r, 40)
+    })),
+    rec: arr(x.rec, 100).filter(r => r && typeof r === "object").map(r => ({
+      id: uid(r.id), n: str(r.n, 300), from: nkTimeOk(r.from) ? r.from : "", to: nkTimeOk(r.to) ? r.to : "", al: !!r.al,
+      days: (Array.isArray(r.days) ? [...new Set(r.days.map(Number).filter(v => Number.isInteger(v) && v >= 0 && v <= 6))] : [0,1,2,3,4,5,6]).sort(),
+      gen: Array.isArray(r.gen) ? r.gen.filter(nkDateOk).slice(-60) : []
     })),
     ans: { when: str(a.when, 5000), what: str(a.what, 5000) }
   };
+}
+/* Daily routine: creates the repeating tasks for a date (today or future only, once per date) */
+function nkEnsure(k) {
+  const n = nk(), today = TD();
+  if (!nkDateOk(k) || k < today || !n.rec.length) return false;
+  const [y, m, d] = k.split("-").map(Number), dow = new Date(y, m - 1, d).getDay();
+  let changed = false;
+  n.rec.forEach(r => {
+    if (!r.n.trim() || !r.days.includes(dow)) return;
+    if (!Array.isArray(r.gen)) r.gen = [];
+    if (r.gen.includes(k)) return;
+    n.tasks.push({ id: nkId(), n: r.n, d: k, from: r.from || "", to: r.to || "", al: !!r.al, st: "ns", r: r.id });
+    r.gen = r.gen.filter(g => g >= today).concat(k);
+    changed = true;
+  });
+  if (changed) save();
+  return changed;
 }
 function nkLeft() {
   const n = nk(), now = Date.now();
@@ -4348,6 +4384,7 @@ function nkTick() {
 }
 
 function nuke() {
+  const today0 = TD(); nkEnsure(today0); nkEnsure(addDays(today0, 1)); nkEnsure(S.nkd || today0);
   const n = nk(), L = nkLeft(), today = TD(), k = S.nkd || today, tmr = addDays(today, 1);
   const dt = new Date(k + "T00:00:00");
   const tasks = n.tasks.filter(t => t.d === k).sort((a, b) => (a.from || "99:99").localeCompare(b.from || "99:99"));
@@ -4363,7 +4400,7 @@ function nuke() {
       <button class="tk-chk" data-act="nkst:${t.id}" aria-pressed="${t.st === "dn"}" aria-label="Mark done">${t.st === "dn" ? ic("check", 16) : ""}</button>
       ${open
         ? `<input class="tk-name" data-nkt="n:${t.id}" value="${esc(t.n)}" placeholder="Task ka naam" aria-label="Task">`
-        : `<button class="tk-name tk-nm ${t.n.trim() ? "" : "empty"}" data-act="nkx:${t.id}" aria-expanded="false">${t.n.trim() ? esc(t.n) : "Task ka naam"}</button>`}
+        : `<button class="tk-name tk-nm ${t.n.trim() ? "" : "empty"}" data-act="nkx:${t.id}" aria-expanded="false">${t.n.trim() ? esc(t.n) : "Task ka naam"}${t.r ? `<span class="nk-rp" title="Repeats daily">${ic("swap", 12)}</span>` : ""}</button>`}
       <label class="tk-stp"><span class="nk-dot"></span><b>${ST_SHORT[t.st] || "To do"}</b>${ic("chevd", 14)}<select data-nkt="st:${t.id}" aria-label="Status">${NK_ST.map(([v, l]) => `<option value="${v}" ${v === t.st ? "selected" : ""}>${ST_SHORT[v] || l}</option>`).join("")}</select></label>
     </div>
     ${open ? `<div class="tk-more">
@@ -4373,6 +4410,7 @@ function nuke() {
       </div>
       <div class="tk-row">
         <label class="tk-pill">${ic("cal", 16)}<input type="date" data-nkt="d:${t.id}" value="${esc(t.d)}" aria-label="Date"></label>
+        <button class="tk-al ${n.rec.some(r => r.id === t.r) ? "on" : ""}" data-act="nkrep:${t.id}" aria-pressed="${n.rec.some(r => r.id === t.r)}" aria-label="Repeat every day" title="Repeat every day">${ic("swap", 18)}</button>
         <button class="tk-al tk-del" data-act="nkdel:t:${t.id}" aria-label="Delete task">${ic("trash", 18)}</button>
         <button class="tk-al" data-act="nkx:${t.id}" aria-label="Close">${ic("chevu", 18)}</button>
       </div>
@@ -4386,12 +4424,11 @@ function nuke() {
   const listAcc = (key, title, sub, icon, items, ph) => {
     const open = S["nk" + key] !== false;
     const vis = items.filter(i => i.t.trim());
-    const col = key === "w" ? "#22c55e" : "var(--bad)";
-    return `<div class="dcard acc nk-pc ${open ? "open" : ""}" style="--c:${col}">
-      <button class="acc-hd" data-act="nktgl:${key}" aria-expanded="${open}"><span class="cic" style="background:linear-gradient(135deg,${col},color-mix(in srgb,${col} 55%,#000));color:#fff;border:0;box-shadow:0 0 18px -4px ${col}">${ic(icon, 20)}</span><div><b>${title}</b><small>${vis.length} ${vis.length === 1 ? "point" : "points"} · ${sub}</small></div><span class="acc-ch">${ic(open ? "chevu" : "chevd", 18)}</span></button>
+    return `<div class="dcard acc nk-pc nk-${key} ${open ? "open" : ""}">
+      <button class="acc-hd" data-act="nktgl:${key}" aria-expanded="${open}"><span class="cic">${ic(icon, 20)}</span><div><b>${title}</b><small>${vis.length} ${vis.length === 1 ? "point" : "points"} · ${sub}</small></div><span class="acc-ch">${ic(open ? "chevu" : "chevd", 18)}</span></button>
       ${open ? `<div class="acc-body">
         ${vis.length
-          ? vis.map((i, n) => `<div class="nk-pt"><i>${ic(key === "w" ? "up" : "swap", 16)}</i><div><small>${key === "w" ? "DO MORE" : "CHANGE IT"}</small><span>${esc(i.t)}</span></div></div>`).join("")
+          ? vis.map(i => `<div class="nk-pt"><span>${esc(i.t)}</span></div>`).join("")
           : `<p class="note" style="margin:10px 0 2px">Abhi kuch nahi likha. Config → Nuke Goal me add karo.</p>`}
       </div>` : ""}
     </div>`;
@@ -4486,14 +4523,15 @@ function nuke() {
 function nkAct(a) {
   clickAudio(); haptic(10);
   const n = nk(), p = a.split(":"), cmd = p[0];
-  const listOf = c => c === "w" ? n.works : c === "f" ? n.fails : c === "m" ? n.tm : c === "t" ? n.tasks : null;
+  const listOf = c => c === "w" ? n.works : c === "f" ? n.fails : c === "m" ? n.tm : c === "t" ? n.tasks : c === "r" ? n.rec : null;
   if (cmd === "nkcfg") { S.tab = "set"; S.nukeOpen = true; S.open = null; window.scrollTo(0, 0); return render(); }
   if (cmd === "nktgl") { const key = "nk" + p[1]; S[key] = S[key] === false; return render(); }
   if (cmd === "nkd") { S.nkd = p[1] === "today" ? TD() : addDays(S.nkd || TD(), +p[1] || 0); return render(); }
   if (cmd === "nkadd") {
     const c = p[1], el = document.getElementById("nk-new-" + c), v = el ? el.value.trim().slice(0, 300) : "";
     if (!v || !listOf(c)) { if (el) el.focus(); return; }
-    if (c === "t") { const nid = nkId(); n.tasks.push({ id: nid, n: v, d: S.nkd || TD(), from: "", to: "", al: false, st: "ns" }); S.nkx = nid; }
+    if (c === "t") { const nid = nkId(); n.tasks.push({ id: nid, n: v, d: S.nkd || TD(), from: "", to: "", al: false, st: "ns", r: "" }); S.nkx = nid; }
+    else if (c === "r") { n.rec.push({ id: nkId(), n: v, from: "", to: "", al: false, days: [0,1,2,3,4,5,6], gen: [] }); nkEnsure(TD()); nkEnsure(addDays(TD(), 1)); }
     else listOf(c).push({ id: nkId(), t: v });
     save(); render();
     const again = document.getElementById("nk-new-" + c);
@@ -4502,13 +4540,41 @@ function nkAct(a) {
   }
   if (cmd === "nkdel") {
     const L0 = listOf(p[1]), it0 = L0 && L0.find(x => x.id === p[2]);
-    const label = it0 ? ((p[1] === "t" ? it0.n : it0.t) || "").trim() : "";
-    S.cm = { title: p[1] === "t" ? "Delete this task?" : "Delete this point?", msg: "\u201C" + (label || (p[1] === "t" ? "Task" : "Point")) + "\u201D will be removed. This can\u2019t be undone.", yes: "nkdelgo:" + p[1] + ":" + p[2] };
+    const isT = p[1] === "t" || p[1] === "r", label = it0 ? ((isT ? it0.n : it0.t) || "").trim() : "";
+    S.cm = { title: p[1] === "r" ? "Delete this routine?" : p[1] === "t" ? "Delete this task?" : "Delete this point?", msg: "\u201C" + (label || (isT ? "Task" : "Point")) + "\u201D will be removed" + (p[1] === "r" ? " from your daily routine. Tasks already created stay." : ". This can\u2019t be undone."), yes: "nkdelgo:" + p[1] + ":" + p[2] };
     return render();
   }
   if (cmd === "nkdel" || cmd === "nkdelgo") {
     const L = listOf(p[1]), i = L ? L.findIndex(x => x.id === p[2]) : -1;
     if (i >= 0) { L.splice(i, 1); save(); }
+    return render();
+  }
+  if (cmd === "nkrep") {
+    const t = n.tasks.find(x => x.id === p[1]);
+    if (t) {
+      const ex = n.rec.findIndex(r => r.id === t.r);
+      if (ex >= 0) { n.rec.splice(ex, 1); t.r = ""; }
+      else if (t.n.trim()) {
+        const rid = nkId();
+        n.rec.push({ id: rid, n: t.n.trim(), from: t.from || "", to: t.to || "", al: !!t.al, days: [0,1,2,3,4,5,6], gen: [t.d] });
+        t.r = rid;
+      }
+      save(); nkEnsure(TD()); nkEnsure(addDays(TD(), 1));
+    }
+    return render();
+  }
+  if (cmd === "nkrd") {
+    const r = n.rec.find(x => x.id === p[1]), dw = +p[2];
+    if (r && dw >= 0 && dw <= 6) {
+      if (r.days.includes(dw)) { if (r.days.length > 1) r.days = r.days.filter(v => v !== dw); }
+      else r.days = r.days.concat(dw).sort();
+      save();
+    }
+    return render();
+  }
+  if (cmd === "nkral") {
+    const r = n.rec.find(x => x.id === p[1]);
+    if (r) { r.al = !r.al; save(); }
     return render();
   }
   if (cmd === "nkx") { S.nkx = S.nkx === p[1] ? null : p[1]; return render(); }
@@ -4524,14 +4590,14 @@ function nkAct(a) {
   }
   if (cmd === "nkpush") {
     const tmr = addDays(TD(), 1);
-    n.tm.filter(i => i.t.trim()).forEach(i => n.tasks.push({ id: nkId(), n: i.t.trim(), d: tmr, from: "", to: "", al: false, st: "ns" }));
+    n.tm.filter(i => i.t.trim()).forEach(i => n.tasks.push({ id: nkId(), n: i.t.trim(), d: tmr, from: "", to: "", al: false, st: "ns", r: "" }));
     n.tm = []; S.nkd = tmr; save();
     return render();
   }
 }
 function nkChange(t) {
   const d = t.dataset;
-  if (!d || (d.nkdl == null && d.nkst == null && d.nkl == null && d.nkm == null && d.nkt == null && d.nkdate == null)) return false;
+  if (!d || (d.nkdl == null && d.nkst == null && d.nkl == null && d.nkm == null && d.nkt == null && d.nkdate == null && d.nkr == null)) return false;
   const n = nk();
   if (d.nkdl != null) { if (nkDateOk(t.value)) { n.dl = t.value; save(); } render(); return true; }
   if (d.nkst != null) { if (nkDateOk(t.value)) { n.st = t.value; save(); } render(); return true; }
@@ -4539,6 +4605,15 @@ function nkChange(t) {
   if (d.nkl != null) {
     const [c, id] = d.nkl.split(":"), it = (c === "w" ? n.works : n.fails).find(x => x.id === id);
     if (it) { it.t = t.value.trim().slice(0, 300); save(); }
+    return true;
+  }
+  if (d.nkr != null) {
+    const i0 = d.nkr.indexOf(":"), f0 = d.nkr.slice(0, i0), rr = n.rec.find(x => x.id === d.nkr.slice(i0 + 1));
+    if (rr) {
+      if (f0 === "n") rr.n = t.value.trim().slice(0, 300);
+      else if (f0 === "from" || f0 === "to") rr[f0] = nkTimeOk(t.value) ? t.value : "";
+      save();
+    }
     return true;
   }
   if (d.nkm != null) {
